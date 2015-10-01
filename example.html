@@ -50,11 +50,8 @@
                                     results.appendChild(newP(err));
                                 } else {
 
-                                    results.appendChild(newP(fetched.Taxon.ScientificName));
+                                    results.appendChild(newP(JSON.stringify(fetched.Taxon, null, '\t')));
 
-                                    results.appendChild(newP(fetched.Taxon.Division));
-
-                                    results.appendChild(newP(fetched.Taxon.Lineage));
                                 }
                             })
                         } else {
