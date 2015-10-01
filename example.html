@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>tax lookup test</title>
+
+</head>
+<body>
+
+<p>type here</p>
+<input type="text" id="input">
+
+<div id="results"></div>
+
+
+<script src="./dist/taxlookup.js"></script>
+
+
+<script>
+
+    function newP(text) {
+        var para = document.createElement("p");
+        var node = document.createTextNode(text);
+        para.appendChild(node);
+
+        return para;
+    }
+
+    var results = document.getElementById("results");
+
+    var input = document.getElementById("input");
+    input.addEventListener("input", function () {
+        results.innerHTML = "";
+
+        tax.eSearch(input.value, function (err, out) {
+
+
+            if (err) {
+                results.append(newP(err));
+            } else {
+                if (out) {
+                    if (out.length) {
+                        results.append(newP(out));
+
+                        tax.eFetch(out, function (err, fetched) {
+                            if (err) {
+                                results.append(newP(err));
+                            } else {
+
+                                results.append(newP(fetched.Taxon.ScientificName));
+
+                                results.append(newP(fetched.Taxon.Division));
+
+                                results.append(newP(fetched.Taxon.Lineage));
+                            }
+                        })
+                    } else {
+                        tax.eSpell(input.value, function (err, out) {
+                            if (err) {
+                                results.append(newP(err));
+                            } else {
+                                results.append(newP('suggested:' + out));
+                            }
+                        });
+                    }
+                }
+
+            }
+        })
+    });
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "taxLookup",
+  "main": "index.js",
+  "version": "0.0.0",
+  "homepage": "https://github.com/wookoouk/taxLookup",
+  "authors": [
+    "Martin Page <wookoouk@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "superagent": "~1.4.0"
+  }
+}
