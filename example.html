@@ -20,59 +20,69 @@
 
 <script>
 
-    function newP(text) {
-        var para = document.createElement("p");
-        var node = document.createTextNode(text);
-        para.appendChild(node);
+    function demo() {
+        function newP(text) {
+            var para = document.createElement("p");
+            var node = document.createTextNode(text);
+            para.appendChild(node);
 
-        return para;
-    }
+            return para;
+        }
 
-    var results = document.getElementById("results");
+        var results = document.getElementById("results");
 
-    var input = document.getElementById("input");
-    input.addEventListener("input", function () {
-        results.innerHTML = "";
+        var input = document.getElementById("input");
+        input.addEventListener("input", function () {
+            results.innerHTML = "";
 
-        tax.eSearch(input.value, function (err, out) {
+            tax.eSearch(input.value, function (err, out) {
 
 
-            if (err) {
-                results.append(newP(err));
-            } else {
-                if (out) {
-                    if (out.length) {
-                        results.append(newP(out));
+                if (err) {
+                    results.append(newP(err));
+                } else {
+                    if (out) {
+                        if (out.length) {
+                            results.append(newP(out));
 
-                        tax.eFetch(out, function (err, fetched) {
-                            if (err) {
-                                results.append(newP(err));
-                            } else {
+                            tax.eFetch(out, function (err, fetched) {
+                                if (err) {
+                                    results.append(newP(err));
+                                } else {
 
-                                results.append(newP(fetched.Taxon.ScientificName));
+                                    results.append(newP(fetched.Taxon.ScientificName));
 
-                                results.append(newP(fetched.Taxon.Division));
+                                    results.append(newP(fetched.Taxon.Division));
 
-                                results.append(newP(fetched.Taxon.Lineage));
-                            }
-                        })
-                    } else {
-                        tax.eSpell(input.value, function (err, out) {
-                            if (err) {
-                                results.append(newP(err));
-                            } else {
-                                if(out){
-                                    results.append(newP('suggested:' + out));
+                                    results.append(newP(fetched.Taxon.Lineage));
                                 }
+                            })
+                        } else {
+                            tax.eSpell(input.value, function (err, out) {
+                                if (err) {
+                                    results.append(newP(err));
+                                } else {
+                                    if (out) {
+                                        results.append(newP('suggested:' + out));
+                                    }
 
-                            }
-                        });
+                                }
+                            });
+                        }
                     }
-                }
 
-            }
-        })
-    });
+                }
+            })
+        });
+    }
+    function ready(fn) {
+        if (document.readyState != 'loading') {
+            fn();
+        } else {
+            document.addEventListener('DOMContentLoaded', fn);
+        }
+    }
+    ready(demo);
 
 
 </script>
