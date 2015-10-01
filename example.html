@@ -61,7 +61,10 @@
                             if (err) {
                                 results.append(newP(err));
                             } else {
-                                results.append(newP('suggested:' + out));
+                                if(out){
+                                    results.append(newP('suggested:' + out));
+                                }
+
                             }
                         });
                     }
