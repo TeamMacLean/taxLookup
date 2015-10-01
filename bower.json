@@ -1,8 +1,8 @@
 {
-  "name": "taxLookup",
-  "main": "index.js",
-  "version": "0.0.0",
-  "homepage": "https://github.com/wookoouk/taxLookup",
+  "name": "taxlookup",
+  "main": "./dist/taxlookup.js",
+  "version": "1.0.0",
+  "homepage": "https://github.com/wookoouk/taxlookup",
   "authors": [
     "Martin Page <wookoouk@gmail.com>"
   ],
@@ -15,6 +15,5 @@
     "tests"
   ],
   "dependencies": {
-    "superagent": "~1.4.0"
   }
 }
