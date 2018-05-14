@@ -1,6 +1,5 @@
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
-
 const parseString = require('xml2js').parseString;
 
 class Tax {

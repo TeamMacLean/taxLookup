@@ -1,6 +1,6 @@
 {
   "name": "taxlookup",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "",
   "main": "index.js",
   "directories": {
@@ -9,10 +9,7 @@
   "dependencies": {
     "es6-promise": "^4.2.4",
     "isomorphic-fetch": "^2.2.1",
-    "xml2js": "^0.4.19",
-    "xmlToJSON": "latest",
-    "xmldom": "^0.1.27",
-    "xmltojson": "^1.3.5"
+    "xml2js": "^0.4.19"
   },
   "repository": {
     "type": "git",
