@@ -18,9 +18,16 @@ class Tax {
         return fetch(url)
             .then(response => response.text())
             .then(response => {
-                parseString(response, function (err, result) {
-                    return result.eSpellResult.CorrectedQuery;
-                });
+                return new Promise((good, bad) => {
+                    parseString(response, function (err, result) {
+                        if (err) {
+                            return bad(err);
+                        } else {
+                            return good(result.eSpellResult.CorrectedQuery);
+                        }
+
+                    });
+                })
             })
     };
 }
