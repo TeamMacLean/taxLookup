@@ -1,20 +1,21 @@
-require('es6-promise').polyfill();
-require('isomorphic-fetch');
+const Promise = require('es6-promise').Promise;
+import fetchPonyfill from 'fetch-ponyfill';
+
+const {fetch} = fetchPonyfill({Promise: Promise});
+
 const parseString = require('xml2js').parseString;
 
-class Tax {
-    static search(search) {
-        const url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=taxonomy&term=' + search + '&retmode=json';
-
+const Tax = {
+    search: function (search) {
+        const url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?retmode=json&db=taxonomy&term=' + encodeURIComponent(search);
         return fetch(url)
             .then((response) => response.json())
             .then((json) => {
                 return json.esearchresult.idlist;
             });
-    };
-
-    static spell(search) {
-        const url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/espell.fcgi?term=' + search + '&db=taxonomy';
+    },
+    spell: function (search) {
+        const url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/espell.fcgi?term=' + encodeURIComponent(search);
         return fetch(url)
             .then(response => response.text())
             .then(response => {
@@ -29,7 +30,13 @@ class Tax {
                     });
                 })
             })
-    };
-}
+    }
 
-module.exports = Tax;
+};
+
+if (typeof window === 'undefined') {
+   module.exports = Tax;
+
+} else {
+    window.Tax = Tax;
+}

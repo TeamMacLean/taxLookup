@@ -1,0 +1,20 @@
+<html>
+<head></head>
+<body>
+<script src="./dist/index.js"></script>
+
+<div id="search"></div>
+<div id="spell"></div>
+<script>
+    Tax.search('nicotiana benthamiana')
+        .then(results => {
+            document.getElementById('search').innerHTML = 'search found: ' + results;
+        });
+
+    Tax.spell('nicotiana benthamia')
+        .then(results => {
+            document.getElementById('spell').innerHTML = 'spell found: ' + results;
+        });
+</script>
+</body>
+</html>

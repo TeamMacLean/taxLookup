@@ -1,14 +1,17 @@
 {
   "name": "taxlookup",
-  "version": "2.1.1",
+  "version": "2.3.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "directories": {
     "test": "test"
   },
+  "scripts": {
+    "build": "parcel build index.js -d dist/"
+  },
   "dependencies": {
     "es6-promise": "^4.2.4",
-    "isomorphic-fetch": "^2.2.1",
+    "fetch-ponyfill": "^6.0.2",
     "xml2js": "^0.4.19"
   },
   "repository": {
