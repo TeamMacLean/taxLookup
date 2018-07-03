@@ -1,7 +1,6 @@
-const Promise = require('es6-promise').Promise;
-import fetchPonyfill from 'fetch-ponyfill';
-
-const {fetch} = fetchPonyfill({Promise: Promise});
+const fetchPonyfill = require('fetch-ponyfill');
+const PromisePolly = require('promise-polyfill').default;
+const {fetch} = fetchPonyfill({Promise: PromisePolly});
 
 const parseString = require('xml2js').parseString;
 
@@ -12,7 +11,8 @@ const Tax = {
             .then((response) => response.json())
             .then((json) => {
                 return json.esearchresult.idlist;
-            });
+            })
+            .catch(err => console.error(err));
     },
     spell: function (search) {
         const url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/espell.fcgi?term=' + encodeURIComponent(search);
@@ -30,12 +30,13 @@ const Tax = {
                     });
                 })
             })
+            .catch(err => console.error(err));
     }
 
 };
 
 if (typeof window === 'undefined') {
-   module.exports = Tax;
+    module.exports = Tax;
 
 } else {
     window.Tax = Tax;

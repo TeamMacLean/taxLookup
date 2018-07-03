@@ -1,6 +1,6 @@
 {
   "name": "taxlookup",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "",
   "main": "dist/index.js",
   "directories": {
@@ -10,9 +10,9 @@
     "build": "parcel build index.js -d dist/"
   },
   "dependencies": {
-    "es6-promise": "^4.2.4",
     "fetch-ponyfill": "^6.0.2",
-    "xml2js": "^0.4.19"
+    "xml2js": "^0.4.19",
+    "promise-polyfill": "latest"
   },
   "repository": {
     "type": "git",
