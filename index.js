@@ -1,43 +1,35 @@
-const fetchPonyfill = require('fetch-ponyfill');
-const PromisePolly = require('promise-polyfill').default;
-const {fetch} = fetchPonyfill({Promise: PromisePolly});
-
 const parseString = require('xml2js').parseString;
+const PromisePoly = require('promise-polyfill');
+const request = require('request');
 
-const Tax = {
+Tax = {
     search: function (search) {
-        const url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?retmode=json&db=taxonomy&term=' + encodeURIComponent(search);
-        return fetch(url)
-            .then((response) => response.json())
-            .then((json) => {
-                return json.esearchresult.idlist;
-            })
-            .catch(err => console.error(err));
+        return new PromisePoly((good, bad) => {
+            const url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?retmode=json&db=taxonomy&term=' + encodeURIComponent(search);
+            request(url, function (error, response, body) {
+                return good(JSON.parse(body).esearchresult.idlist);
+            });
+        })
     },
     spell: function (search) {
-        const url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/espell.fcgi?term=' + encodeURIComponent(search);
-        return fetch(url)
-            .then(response => response.text())
-            .then(response => {
-                return new Promise((good, bad) => {
-                    parseString(response, function (err, result) {
-                        if (err) {
-                            return bad(err);
-                        } else {
-                            return good(result.eSpellResult.CorrectedQuery);
-                        }
+        return new PromisePoly((good, bad) => {
+            const url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/espell.fcgi?term=' + encodeURIComponent(search);
+            request(url, function (error, response, body) {
+                parseString(body, function (err, result) {
+                    if (err) {
+                        return bad(err);
+                    } else {
+                        return good(result.eSpellResult.CorrectedQuery);
+                    }
 
-                    });
-                })
-            })
-            .catch(err => console.error(err));
+                });
+            });
+        })
     }
-
 };
 
 if (typeof window === 'undefined') {
     module.exports = Tax;
-
 } else {
     window.Tax = Tax;
 }

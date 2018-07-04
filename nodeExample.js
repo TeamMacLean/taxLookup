@@ -1,5 +1,6 @@
 const Tax = require('./index');
-console.log(Tax);
+
+console.log('tax',Tax);
 
 Tax.search('nicotiana benthamiana')
     .then(results => {
