@@ -1,30 +1,38 @@
 const parseString = require('xml2js').parseString;
-const PromisePoly = require('promise-polyfill');
-const request = require('request');
+const axios = require('axios');
+const Promise = require('es6-promise').Promise;
 
 Tax = {
     search: function (search) {
-        return new PromisePoly((good, bad) => {
-            const url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?retmode=json&db=taxonomy&term=' + encodeURIComponent(search);
-            request(url, function (error, response, body) {
-                return good(JSON.parse(body).esearchresult.idlist);
-            });
-        })
+
+        const url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?retmode=json&db=taxonomy&term=' + encodeURIComponent(search);
+
+        return axios.get(url)
+            .then(function (response) {
+                // console.log(response.data);
+                return response.data.esearchresult.idlist;
+            })
     },
     spell: function (search) {
-        return new PromisePoly((good, bad) => {
-            const url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/espell.fcgi?term=' + encodeURIComponent(search);
-            request(url, function (error, response, body) {
-                parseString(body, function (err, result) {
-                    if (err) {
-                        return bad(err);
-                    } else {
-                        return good(result.eSpellResult.CorrectedQuery);
-                    }
+        const url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/espell.fcgi?term=' + encodeURIComponent(search);
 
-                });
-            });
-        })
+        return axios.get(url)
+            .then(function (response) {
+                // console.log(response);
+
+
+                return new Promise((good, bad) => {
+                    parseString(response.data, function (err, result) {
+                        if (err) {
+                            return bad(err);
+                        } else {
+                            return good(result.eSpellResult.CorrectedQuery);
+                        }
+
+                    });
+                })
+
+            })
     }
 };
 
