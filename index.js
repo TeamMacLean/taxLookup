@@ -2,7 +2,10 @@ const parseString = require('xml2js').parseString;
 const axios = require('axios');
 Tax = {
     search: function (search, api_key) {
-        const url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?retmode=json&db=taxonomy&term=' + encodeURIComponent(search)+api_key?'&api_key='+api_key:'';
+        let url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?retmode=json&db=taxonomy&term=' + encodeURIComponent(search);
+        if (api_key) {
+            url += '&api_key=' + api_key
+        }
 
         return axios.get(url)
             .then(function (response) {
@@ -10,8 +13,13 @@ Tax = {
                 return response.data.esearchresult.idlist;
             })
     },
-    spell: function (search) {
-        const url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/espell.fcgi?term=' + encodeURIComponent(search)+api_key?'&api_key='+api_key:'';
+    spell: function (search, api_key) {
+
+        let url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/espell.fcgi?term=' + encodeURIComponent(search);
+
+        if (api_key) {
+            url += '&api_key=' + api_key
+        }
 
         return axios.get(url)
             .then(function (response) {
